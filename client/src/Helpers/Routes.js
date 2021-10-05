@@ -6,18 +6,22 @@ import {
 } from 'react-router-dom';
 import Login from '../Components/Login';
 import Signup from '../Components/Signup';
+import Profile from '../Components/Profile';
+import logo from '../Components/logo.png';
+import '../App.css';
 
 function Routes() {
   return (
     // eslint-disable-next-line react/jsx-filename-extension
     <div>
+      <div className="top-bar">
+        <div className="wc-logo"><img src={logo} alt="logo" /></div>
+      </div>
       <Router>
         <Switch>
           <Route exact path="/" component={Signup} />
           <Route exact path="/Login" component={Login} />
-          {/* {user?.uid
-          ? <Route exact path="/ChatPreview" component={() => ChatPreview({ user })} />
-          : <Route exact path="/Login" component={Login} />} */}
+          <Route exact path="/Profile" component={Profile} />
         </Switch>
       </Router>
     </div>

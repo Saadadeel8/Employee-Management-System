@@ -7,6 +7,9 @@ export const VERIFY_USER = gql`
             email
             username
             id
+            company
+            team
+            gender
         }
     }`;
 export const GENERATE_REFRESH_TOKEN = gql`

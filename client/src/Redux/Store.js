@@ -1,9 +1,6 @@
 import { createStore } from 'redux';
-import { compose, createStore, applyMiddleware } from 'redux'
+import authReducer from './Auth/Reducer';
 
+const store = createStore(authReducer);
 
-const loggerMiddleware = require('redux-logger');
-const middleware = [loggerMiddleware.createLogger()];
-const store = createStore(compose(applyMiddleware(...middleware)));
-const store = createStore();
 export default store;

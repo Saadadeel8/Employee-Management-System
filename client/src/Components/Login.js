@@ -13,7 +13,7 @@ import { LOGIN_USER } from '../GraphQL/Mutations';
 const Login = () => {
   // const history = useHistory();
 
-  const [login, { loading }] = useMutation(LOGIN_USER, {
+  const [login] = useMutation(LOGIN_USER, {
     update(proxy, result) {
       console.log(result);
     },
@@ -71,9 +71,6 @@ const Login = () => {
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
           </Form.Item>
           <div className="submit-button">
             <Form.Item>

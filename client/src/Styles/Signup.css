@@ -29,7 +29,6 @@ h1 {
     width: 90px;
     height: 90px;
     transform: translateY(-5%);
-    border-color: none;
 }
 
 .display-picture .ant-upload-list-picture .ant-upload-list-item, .ant-upload-list-picture-card .ant-upload-list-item{
@@ -44,8 +43,8 @@ h1 {
     justify-content: center;
     align-items: center;
     background-color: #fff;
-    margin-top: 3%;
-    width: 420px;
+    margin-top: 2%;
+    width: 400px;
     padding: 2%;
     height: 600px;
     border-radius: 10px 0 0 10px;
@@ -95,8 +94,15 @@ h1 {
     justify-content: center;
     align-items: center;
     text-align: center;
+    margin: 10% 0 10% 0;
 }
 
 .form-item {
     margin: 0.5em 0;
+}
+
+.back-button{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 }
