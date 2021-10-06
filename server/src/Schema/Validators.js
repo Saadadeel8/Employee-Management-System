@@ -8,7 +8,10 @@ const username = Joi.string().max(255).min(4)
 const password = Joi.string().max(30).min(6)
   .label('Password')
   .required();
-
+const gender = Joi.string().max(255).label('Gender').required();
+const company = Joi.string().max(255).label('Company').required();
+const designation = Joi.string().max(255).label('Designation').required();
+const team = Joi.string().max(255).label('Team').required();
 export const loginValidate = Joi.object().keys({
   username,
   password,
@@ -19,4 +22,8 @@ export const registerValidate = Joi.object().keys({
   password,
   email,
   name,
+  gender,
+  company,
+  designation,
+  team,
 });

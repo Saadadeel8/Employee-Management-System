@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import {
   ApolloClient,
   InMemoryCache,
@@ -7,11 +8,13 @@ import {
   from,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { Provider } from 'react-redux';
 import Routes from './Helpers/Routes';
+import store from './Redux/Store';
 
-const errorLink = onError(({ graphqlErrors, networkError }) => {
+const errorLink = onError(({ graphqlErrors }) => {
   if (graphqlErrors) {
-    graphqlErrors.map(({ message, location, path }) => alert(`Graphql error ${message}`));
+    graphqlErrors.map(({ message }) => alert(`Graphql error ${message}`));
   }
 });
 
@@ -27,9 +30,11 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <Routes />
-    </ApolloProvider>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <Routes />
+      </ApolloProvider>
+    </Provider>
   );
 }
 

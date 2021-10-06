@@ -6,6 +6,10 @@ const typeDefs = gql`
         name: String
         email: String
         username: String
+        gender: String
+        company: String
+        team: String
+        designation: String
         createdAt: String
         updatedAt: String
 }
@@ -25,10 +29,14 @@ const typeDefs = gql`
      # Mutations
      type Mutation {
          register(
-             name: String!
-             email: String!
-             username: String!
-             password: String!
+             name: String
+             email: String
+             username: String
+             password: String
+             gender: String
+             company: String
+             team: String
+             designation: String
          ): Auth!
          login(
              username: String!
