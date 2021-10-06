@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Styles/Signup.css';
 import {
-  Form, Input, Button, Select, Alert,
+  Form, Input, Button, Select, Alert, notification
 } from 'antd';
 import { useMutation } from '@apollo/client';
 import {
@@ -21,7 +21,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [showTeamField, setShowTeamField] = useState(true);
-  const [register, { loading }] = useMutation(CREATE_NEW_USER);
+  const [register, { loading }, error] = useMutation(CREATE_NEW_USER);
   const teamSelect = (team) => {
     if (team === 'HR') {
       setShowTeamField(false);
@@ -34,12 +34,10 @@ const Signup = () => {
       dispatch(updateUserData(values));
       dispatch(incCurrentStep());
     }).catch((err) => (
-      <Alert
-        message="Error"
-        description={err}
-        type="error"
-        showIcon
-      />
+      notification.error({
+        message: err.name,
+        description: err.message,
+      })
     ));
   };
   const handleSubmit = () => {
@@ -63,14 +61,17 @@ const Signup = () => {
           team,
           designation,
         },
-      });
+      }).catch((err) => (
+        notification.error({
+          message: err.name,
+          description: err.message,
+        })
+      ));
     }).catch((err) => (
-      <Alert
-        message="Error"
-        description={err}
-        type="error"
-        showIcon
-      />
+      notification.error({
+        message: err.name,
+        description: err.message,
+      })
     ));
   };
   const BasicData = () => (
@@ -82,6 +83,10 @@ const Signup = () => {
             {
               required: true,
               message: 'Full name is required!',
+            },
+            {
+              pattern: new RegExp(/[a-zA-Z0-9]{3,}$/),
+              message: 'Name is too short',
             },
           ]}
         >
@@ -96,6 +101,10 @@ const Signup = () => {
               required: true,
               message: 'E-mail is required!',
             },
+            {
+              pattern: new RegExp(/^(([\w]+)\.?)+@(([\w]+)\.?)+\.[a-zA-Z]{2,4}$/),
+              message: 'Email format is incorrect',
+            },
           ]}
         >
           <Input placeholder="Email ID" />
@@ -109,6 +118,10 @@ const Signup = () => {
               required: true,
               message: 'Username is required!',
             },
+            {
+              pattern: new RegExp(/[a-zA-Z0-9]{3,}$/),
+              message: 'Username is too short',
+            },
           ]}
         >
           <Input placeholder="Username" />
@@ -121,6 +134,10 @@ const Signup = () => {
             {
               required: true,
               message: 'Please input your password!',
+            },
+            {
+              pattern: new RegExp(/[a-zA-Z0-9]{6,}$/),
+              message: 'Password is too short',
             },
           ]}
           hasFeedback
