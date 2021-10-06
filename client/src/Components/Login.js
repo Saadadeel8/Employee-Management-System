@@ -1,7 +1,7 @@
 import React from 'react';
 import '../Styles/Signup.css';
 import {
-  Form, Input, Button, Checkbox,
+  Form, Input, Button, Checkbox, Alert,
 } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
@@ -13,11 +13,7 @@ import { LOGIN_USER } from '../GraphQL/Mutations';
 const Login = () => {
   // const history = useHistory();
 
-  const [login] = useMutation(LOGIN_USER, {
-    update(proxy, result) {
-      console.log(result);
-    },
-  });
+  const [login] = useMutation(LOGIN_USER);
 
   const handleSubmit = (values) => {
     login({
@@ -25,13 +21,17 @@ const Login = () => {
         username: values.username,
         password: values.password,
       },
-    }).catch((err) => {
-      console.log(err);
-    });
+    }).catch((err) => (
+      <Alert
+        message="Error"
+        description={err}
+        type="error"
+        showIcon
+      />
+    ));
   };
 
   return (
-    // eslint-disable-next-line react/jsx-filename-extension
     <div className="Interface">
       <div className="user-form">
         <h1>Login</h1>

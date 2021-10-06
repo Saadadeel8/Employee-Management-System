@@ -24,10 +24,8 @@ export const issueTokens = async ({
 
 export const getAuthUser = async (request, requiresAuth = false) => {
   const header = request.headers.authorization;
-  console.log(header);
   if (header) {
     const token = jwt.verify(header, APP_SECRET);
-    console.log('TOKEN_DECODED', token);
     const authUser = await Users.findById(token.id);
     if (!authUser) {
       throw new AuthenticationError('Invalid Token, User Authentication Failed');
@@ -43,7 +41,6 @@ export const getRefreshTokenUser = async (request) => {
   const header = request.headers.refresh_token;
   if (header) {
     const token = jwt.verify(header, APP_REFRESH_SECRET);
-    console.log('TOKEN_DECODED', token);
     const authUser = await Users.findById(token.id);
     if (!authUser) {
       throw new AuthenticationError('Invalid Refresh Token, User Authentication Failed');

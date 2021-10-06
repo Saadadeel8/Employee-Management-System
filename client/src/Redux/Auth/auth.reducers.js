@@ -1,4 +1,4 @@
-import { UPDATE_USER_DATA, INC_CURRENT_STEP, DEC_CURRENT_STEP } from './Type';
+import { UPDATE_USER_DATA, INC_CURRENT_STEP, DEC_CURRENT_STEP } from './auth.types';
 
 const initialState = {
   currentStep: 0,

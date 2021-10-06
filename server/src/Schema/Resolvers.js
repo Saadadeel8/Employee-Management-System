@@ -10,9 +10,8 @@ const resolvers = {
     // Return List of Users
     users: async (parent, args, context) => {
       await getAuthUser(context.req);
-      const everyone = await Users.find();
-      console.log(everyone);
-      return everyone;
+      const allUsers = await Users.find();
+      return allUsers;
     },
 
     // Protected Resolver

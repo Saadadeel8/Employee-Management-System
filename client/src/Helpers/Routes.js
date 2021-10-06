@@ -12,7 +12,6 @@ import '../App.css';
 
 function Routes() {
   return (
-    // eslint-disable-next-line react/jsx-filename-extension
     <div>
       <div className="top-bar">
         <div className="wc-logo"><img src={logo} alt="logo" /></div>

@@ -30,7 +30,6 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    // eslint-disable-next-line react/jsx-filename-extension
     <Provider store={store}>
       <ApolloProvider client={client}>
         <Routes />

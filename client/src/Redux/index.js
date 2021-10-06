@@ -1,3 +1,3 @@
-export { userDataUpdate } from './Auth/Action';
-export { goForward } from './Auth/Action';
-export { goBack } from './Auth/Action';
+export { updateUserData } from './Auth/auth.actions';
+export { incCurrentStep } from './Auth/auth.actions';
+export { decCurrentStep } from './Auth/auth.actions';

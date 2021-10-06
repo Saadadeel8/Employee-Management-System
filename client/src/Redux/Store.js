@@ -1,5 +1,5 @@
 import { createStore } from 'redux';
-import authReducer from './Auth/Reducer';
+import authReducer from './Auth/auth.reducers';
 
 const store = createStore(authReducer);
 

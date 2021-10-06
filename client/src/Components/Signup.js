@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Styles/Signup.css';
 import {
-  Form, Input, Button, Select,
+  Form, Input, Button, Select, Alert,
 } from 'antd';
 import { useMutation } from '@apollo/client';
 import {
@@ -10,7 +10,7 @@ import {
 import { LeftOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_NEW_USER } from '../GraphQL/Mutations';
-import { userDataUpdate, goForward, goBack } from '../Redux/Auth/Action';
+import { updateUserData, incCurrentStep, decCurrentStep } from '../Redux/Auth/auth.actions';
 
 const { Option } = Select;
 
@@ -21,42 +21,45 @@ const Signup = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [showTeamField, setShowTeamField] = useState(true);
-  const [register, { loading }] = useMutation(CREATE_NEW_USER, {
-    update(proxy, result) {
-      console.log(result);
-    },
-  });
+  const [register, { loading }] = useMutation(CREATE_NEW_USER);
   const teamSelect = (team) => {
     if (team === 'HR') {
       setShowTeamField(false);
-    }
-    if (team !== 'HR') {
+    } else {
       setShowTeamField(true);
     }
   };
   const saveBasicForm = () => {
     form.validateFields().then((values) => {
-      dispatch(userDataUpdate(values));
-      dispatch(goForward());
-    }).catch((err) => {
-      console.log(err);
-    });
+      dispatch(updateUserData(values));
+      dispatch(incCurrentStep());
+    }).catch((err) => (
+      <Alert
+        message="Error"
+        description={err}
+        type="error"
+        showIcon
+      />
+    ));
   };
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      dispatch(userDataUpdate(values));
-      console.log(userData);
+      dispatch(updateUserData(values));
       register({
         variables: {
           user: userData,
         },
       });
-    }).catch((err) => {
-      console.log(err);
-    });
+    }).catch((err) => (
+      <Alert
+        message="Error"
+        description={err}
+        type="error"
+        showIcon
+      />
+    ));
   };
   const BasicData = () => (
-    // eslint-disable-next-line react/jsx-filename-extension
     <div>
       <div className="form-item">
         <Form.Item
@@ -64,7 +67,7 @@ const Signup = () => {
           rules={[
             {
               required: true,
-              message: 'Full Name is required!',
+              message: 'Full name is required!',
             },
           ]}
         >
@@ -114,7 +117,6 @@ const Signup = () => {
     </div>
   );
   const AdditionalData = () => (
-    // eslint-disable-next-line react/jsx-filename-extension
     <div>
       <div className="form-item">
         <Form.Item name="gender" rules={[{ required: true }]}>
@@ -171,7 +173,7 @@ const Signup = () => {
             </Form.Item>
           </div>
         ) : null }
-      <div className="back-button" onClick={() => dispatch(goBack())}>
+      <div role="button" className="back-button" onClick={() => dispatch(decCurrentStep())}>
         <LeftOutlined />
         Back
       </div>
@@ -179,7 +181,6 @@ const Signup = () => {
   );
   const formData = [<BasicData />, <AdditionalData />];
   return (
-  // eslint-disable-next-line react/jsx-filename-extension
     <div className="Interface">
       <div className="user-form">
         <h1>User Sign Up</h1>
