@@ -9,7 +9,7 @@ const typeDefs = gql`
         gender: String
         company: String
         team: String
-        position: String
+        designation: String
         createdAt: String
         updatedAt: String
 }
@@ -36,7 +36,7 @@ const typeDefs = gql`
              gender: String
              company: String
              team: String
-             position: String
+             designation: String
          ): Auth!
          login(
              username: String!

@@ -44,10 +44,24 @@ const Signup = () => {
   };
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      dispatch(updateUserData(values));
+      /* dispatch(updateUserData(values)); */
+      const {
+        name, email, username, password,
+      } = userData;
+      const {
+        gender, company, team, designation,
+      } = values;
+
       register({
         variables: {
-          user: userData,
+          name,
+          email,
+          username,
+          password,
+          gender,
+          company,
+          team,
+          designation,
         },
       });
     }).catch((err) => (
