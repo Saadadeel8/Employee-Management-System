@@ -2,10 +2,11 @@ import bcrypt from 'bcryptjs';
 import Joi from '@hapi/joi';
 import { registerValidate, loginValidate } from './Validators';
 import { issueTokens, getAuthUser, getRefreshTokenUser } from '../Auth/auth';
-
 import Users from '../../Models/Model';
+import Events from '../../Models/EventModel';
 
 const resolvers = {
+
   Query: {
     // Return List of Users
     users: async (parent, args, context) => {
@@ -13,7 +14,12 @@ const resolvers = {
       const allUsers = await Users.find();
       return allUsers;
     },
-
+    // Return List of Events
+    getEvents: async (parent, args, context) => {
+      await getAuthUser(context.req);
+      const allEvents = await Events.find();
+      return allEvents;
+    },
     // Protected Resolver
     profile: async (parent, args, context) => {
       const authUser = await getAuthUser(context.req, true);
@@ -74,6 +80,16 @@ const resolvers = {
         ...tokens,
       };
     },
+    // Event Resolver
+    createevent: async (parent, args, context) => {
+      const authUser = await getAuthUser(context.req, true)
+      const Event = { ...args };
+      const newEvent = await Events.create(Event);
+      console.log(newEvent)
+      return{
+        newEvent,
+      }
+    }
   },
 };
 export default resolvers;

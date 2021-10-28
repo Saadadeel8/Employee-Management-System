@@ -9,7 +9,7 @@ export const issueTokens = async ({
   const token = jwt.sign({
     username, email, name, id,
   }, APP_SECRET, {
-    expiresIn: 120,
+    expiresIn: 300,
   });
   const refreshToken = jwt.sign({
     username, email, name, id,

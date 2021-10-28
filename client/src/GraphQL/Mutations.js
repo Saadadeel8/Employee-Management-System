@@ -20,9 +20,27 @@ export const LOGIN_USER = gql`
                 name
                 email
                 username
+                id
+                gender
+                team
+                designation
+                company
             }
             token
             refreshToken
+        }
+    },
+`;
+
+export const CREATE_EVENT = gql`
+    mutation createevent($color: String $title: String $to: String $from: String $createdBy: String $modifier: String) {
+        createevent(color:$color title:$title to:$to from:$from createdBy:$createdBy modifier:$modifier) {
+            color
+            title
+            to
+            from
+            modifier
+            createdBy
         }
     },
 `;

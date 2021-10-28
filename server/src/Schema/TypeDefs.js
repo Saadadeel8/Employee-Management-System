@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
+
     type User {
         id: ID
         name: String
@@ -13,19 +14,26 @@ const typeDefs = gql`
         createdAt: String
         updatedAt: String
 }
+    type Event {
+        color: String
+        from: String
+        to: String
+        modifier: String
+        title: String
+        createdBy: String
+    }
     type Auth {
         user: User
         token: String
         refreshToken: String
 }
-
      # Queries
      type Query {
          profile: User
          users: [User]
          refreshToken: Auth!
+         getEvents: [Event]
         }
-    
      # Mutations
      type Mutation {
          register(
@@ -41,6 +49,14 @@ const typeDefs = gql`
          login(
              username: String!
              password: String!): Auth
+         createevent(
+             color: String
+             from: String
+             to: String
+             modifier: String
+             title: String
+             createdBy: String
+             ): Event
      }
 `;
 module.exports = { typeDefs };
