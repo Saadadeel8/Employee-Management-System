@@ -2,8 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import consola from 'consola';
-import { DB, APP_PORT } from '../config';
+import { DB, APP_PORT, APP_SECRET } from '../config';
 import resolvers from './Schema/Resolvers';
+
+const jwt = require('jsonwebtoken');
+
+const {
+  graphqlUploadExpress, // A Koa implementation is also exported.
+} = require('graphql-upload');
 
 const { typeDefs } = require('./Schema/TypeDefs');
 
@@ -12,6 +18,18 @@ const app = express();
 
 //  Start Application Function
 const startApp = async () => {
+  // get the user info from a JWT
+  const getUser = (token) => {
+    if (token) {
+      try {
+        // return the user information from the token
+        return jwt.verify(token, APP_SECRET);
+      } catch (err) {
+        // if there's a problem with the token, throw an error
+        return console.log('Session invalid');
+      }
+    }
+  };
   const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true,
@@ -22,14 +40,21 @@ const startApp = async () => {
       typeDefs,
       resolvers,
       cors: corsOptions,
-      context: ({ req }) => ({
-        req,
-      }),
+      context: ({ req }) => {
+        // get the user token from the headers
+        const token = req.headers.authorization;
+        // try to retrieve a user with the token
+        const user = getUser(token);
+        // for now, let's log the user to the console:
+        console.log(user);
+        // add the db models and the user to the context
+        return { req };
+      },
     });
     await server.start();
     //  Setting up Middlewares
+    app.use(graphqlUploadExpress());
     server.applyMiddleware({ app });
-
     app.get('/', () => {
       console.log('Apollo GraphQL Express server is ready');
     });

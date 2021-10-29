@@ -1,3 +1,5 @@
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 export const INC_CURRENT_STEP = 'INC_CURRENT_STEP';
 export const DEC_CURRENT_STEP = 'DEC_CURRENT_STEP';
+export const USER_LOGIN = 'USER_LOGIN';
+export const USER_LOGOUT = 'USER_LOGOUT';

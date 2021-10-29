@@ -1,8 +1,11 @@
-import { UPDATE_USER_DATA, INC_CURRENT_STEP, DEC_CURRENT_STEP } from './auth.types';
+import {
+  UPDATE_USER_DATA, INC_CURRENT_STEP, DEC_CURRENT_STEP, USER_LOGIN, USER_LOGOUT,
+} from './auth.types';
 
 const initialState = {
   currentStep: 0,
   userData: {},
+  loggedInUser: {},
 };
 
 const authReducer = (state = initialState, action) => {
@@ -21,6 +24,16 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         userData: { ...state.userData, ...action.payload },
+      };
+    case USER_LOGIN:
+      return {
+        ...state,
+        loggedInUser: action.payload,
+      };
+    case USER_LOGOUT:
+      return {
+        ...state,
+        loggedInUser: null,
       };
     default: return state;
   }

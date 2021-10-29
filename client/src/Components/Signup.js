@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Styles/Signup.css';
 import {
-  Form, Input, Button, Select, Alert, notification
+  Form, Input, Button, Select, notification,
 } from 'antd';
 import { useMutation } from '@apollo/client';
 import {
@@ -9,19 +9,21 @@ import {
 } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { CREATE_NEW_USER } from '../GraphQL/Mutations';
 import { updateUserData, incCurrentStep, decCurrentStep } from '../Redux/Auth/auth.actions';
 
 const { Option } = Select;
 
 const Signup = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const currentStep = useSelector((state) => state.currentStep);
   const userData = useSelector((state) => state.userData);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [showTeamField, setShowTeamField] = useState(true);
   const [register, { loading }, error] = useMutation(CREATE_NEW_USER);
+
   const teamSelect = (team) => {
     if (team === 'HR') {
       setShowTeamField(false);
@@ -42,14 +44,12 @@ const Signup = () => {
   };
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      /* dispatch(updateUserData(values)); */
       const {
         name, email, username, password,
       } = userData;
       const {
         gender, company, team, designation,
       } = values;
-
       register({
         variables: {
           name,
@@ -73,6 +73,11 @@ const Signup = () => {
         description: err.message,
       })
     ));
+    notification.success({
+      message: 'Success',
+      description: 'Successfully Signed Up',
+    });
+    history.push('/Login');
   };
   const BasicData = () => (
     <div>

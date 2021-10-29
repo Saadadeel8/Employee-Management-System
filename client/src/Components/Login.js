@@ -1,34 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Styles/Signup.css';
 import {
-  Form, Input, Button, Checkbox, Alert,
+  Form, Input, Button, Checkbox, notification,
 } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useMutation } from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import {
   Link,
 } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import { LOGIN_USER } from '../GraphQL/Mutations';
+import { userLogin } from '../Redux';
 
 const Login = () => {
-  // const history = useHistory();
-
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [login] = useMutation(LOGIN_USER);
+  const [form] = Form.useForm();
 
-  const handleSubmit = (values) => {
-    login({
-      variables: {
-        username: values.username,
-        password: values.password,
-      },
-    }).catch((err) => (
-      <Alert
-        message="Error"
-        description={err}
-        type="error"
-        showIcon
-      />
-    ));
+  const handleSubmit = () => {
+    form.validateFields().then((values) => {
+      const { username, password } = values;
+      login({
+        variables: {
+          username,
+          password,
+        },
+      }).then((res) => {
+        localStorage.setItem('currentUser', JSON.stringify(res.data.login));
+        dispatch(userLogin(res.data.login));
+        history.push('/Profile');
+      }).catch((err) => (
+        notification.error({
+          message: err.name,
+          description: err.message,
+        })
+      ));
+    });
   };
 
   return (
@@ -40,6 +49,7 @@ const Login = () => {
           className="login-form"
           initialValues={{ remember: true }}
           onFinish={handleSubmit}
+          form={form}
         >
           <Form.Item
             name="username"
@@ -50,7 +60,7 @@ const Login = () => {
               },
             ]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
           </Form.Item>
           <Form.Item
             name="password"

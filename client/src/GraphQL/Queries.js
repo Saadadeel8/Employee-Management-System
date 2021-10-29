@@ -7,9 +7,6 @@ export const VERIFY_USER = gql`
             email
             username
             id
-            company
-            team
-            gender
         }
     }`;
 export const GENERATE_REFRESH_TOKEN = gql`
@@ -32,5 +29,17 @@ export const GET_ALL_USERS = gql`
             id
             email
             username
+            team
+            designation
         }
     }`;
+export const GET_EVENTS = gql`
+query GetEvents{
+    getEvents{
+        color
+        title
+        to
+        from
+        modifier
+    }
+}`;
