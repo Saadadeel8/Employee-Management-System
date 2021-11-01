@@ -9,18 +9,22 @@
 
 .top-bar {
   width: 100%;
+  display: flex;
   background-color: #001529;
   height: 9vh;
+  color: white;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 .wc-logo {
-  margin: 0 0 0 5px;
+  margin: 0 0 0 10px;
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -43,4 +47,17 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.loading-spinner{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.display-logout{
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;;
 }

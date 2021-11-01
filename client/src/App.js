@@ -1,17 +1,15 @@
 import './App.css';
 import './Styles/Profile.css';
+import './Styles/Newsfeed.css';
 import React, { useEffect } from 'react';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  useQuery,
   createHttpLink,
 } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { setContext } from '@apollo/client/link/context';
-import { notification } from 'antd';
-import { createUploadLink } from 'apollo-upload-client';
 import Routes from './Helpers/Routes';
 import { userLogin } from './Redux';
 

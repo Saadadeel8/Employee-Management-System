@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import '../Styles/Signup.css';
 import {
   Form, Input, Button, Checkbox, notification,
 } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {useMutation, useQuery} from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {
   Link,
 } from 'react-router-dom';

@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useQuery, useMutation } from '@apollo/client';
 import {
   notification, Avatar, Input, Form, Button, Layout, Tabs, Select, Modal, DatePicker, Radio,
 } from 'antd';
 import { useHistory } from 'react-router';
 import { Option } from 'antd/es/mentions';
-import { PoweroffOutlined } from '@ant-design/icons';
 import { Tree, TreeNode } from 'react-organizational-chart';
 import Calendar from 'react-awesome-calendar';
 import { BlockPicker } from 'react-color';
-import { userLogout } from '../Redux';
 import { GET_ALL_USERS, GET_EVENTS, VERIFY_USER } from '../GraphQL/Queries';
 import { CREATE_EVENT } from '../GraphQL/Mutations';
 
@@ -20,7 +18,6 @@ function Profile() {
   const loggedInUser = useSelector((state) => state.loggedInUser);
   const { data: userData } = useQuery(GET_ALL_USERS);
   const { data: eventData } = useQuery(GET_EVENTS);
-  const dispatch = useDispatch();
   const history = useHistory();
   const [showDesc, setShowDesc] = useState(true);
   const [userDescription, setUserDescription] = useState();
@@ -30,7 +27,7 @@ function Profile() {
   } = Layout;
 
   const verifyUser = () => {
-    const { loading, error, data } = useQuery(VERIFY_USER);
+    const { error } = useQuery(VERIFY_USER);
     if (error) {
       notification.error({
         message: error.name,
@@ -46,22 +43,17 @@ function Profile() {
   if (loggedInUser != null) {
     verifyUser();
   }
-  const logout = () => {
-    localStorage.removeItem('currentUser');
-    dispatch(userLogout());
-    history.push('/Login');
+  const homePage = () => {
+    history.push('/Newsfeed');
   };
-
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Layout className="site-layout">
         <Content style={{ margin: '0 16px' }}>
-          <div className="logout-button" onClick={() => logout()}>
-            <PoweroffOutlined />
-            &nbsp;
-            Sign out
-          </div>
           <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <div className="newsfeed-button" role="button" onClick={() => homePage()}>
+              Newsfeed
+            </div>
             <Tabs type="card" tabPosition="left">
               <TabPane tab="Profile" key="1">
                 <div className="container">
@@ -88,13 +80,13 @@ function Profile() {
                     <div className="desc">
                       {showDesc === true
                         ? (
-                          <button onClick={() => setShowDesc(!showDesc)}>
+                          <button type="button" onClick={() => setShowDesc(!showDesc)}>
                             Edit Description
                           </button>
                         ) : (
                           <div>
                             <TextArea value={userDescription} onChange={setUserDescription} />
-                            <button onClick={() => setShowDesc(!showDesc)}>
+                            <button type="button" onClick={() => setShowDesc(!showDesc)}>
                               Submit
                             </button>
                           </div>

@@ -4,6 +4,7 @@ import { registerValidate, loginValidate } from './Validators';
 import { issueTokens, getAuthUser, getRefreshTokenUser } from '../Auth/auth';
 import Users from '../../Models/Model';
 import Events from '../../Models/EventModel';
+import Post from "../../Models/PostModel";
 
 const resolvers = {
 
@@ -33,6 +34,18 @@ const resolvers = {
         user: authUser,
         ...tokens,
       };
+    },
+    getPosts: async (parent, args, context) => {
+      const posts = await Post.find().sort({ createdAt: -1 });
+      return posts;
+    },
+    getPost: async (_, { postId }) => {
+      const post = await Post.findById(postId);
+      if (post) {
+        return post;
+      } else {
+        throw new Error('Post not found');
+      }
     },
   },
   Mutation: {
@@ -82,14 +95,36 @@ const resolvers = {
     },
     // Event Resolver
     createevent: async (parent, args, context) => {
-      const authUser = await getAuthUser(context.req, true)
+      const authUser = await getAuthUser(context.req, true);
       const Event = { ...args };
       const newEvent = await Events.create(Event);
-      console.log(newEvent)
-      return{
+      console.log(newEvent);
+      return {
         newEvent,
+      };
+    },
+    createPost: async (_, { body }, context) => {
+      const authUser = await getAuthUser(context.req, true);
+
+      if (body.trim() === '') {
+        throw new Error('Post body must not be empty');
       }
-    }
+
+      const newPost = new Post({
+        body,
+        user: user.id,
+        username: user.username,
+        createdAt: new Date().toISOString()
+      });
+
+      const post = await newPost.save();
+
+      context.pubsub.publish('NEW_POST', {
+        newPost: post
+      });
+
+      return post;
+    },
   },
 };
 export default resolvers;

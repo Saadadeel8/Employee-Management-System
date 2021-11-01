@@ -1,10 +1,7 @@
 .logout-button {
-    display: flex;
-    justify-content: flex-end;
-    transform: translate(-4%, -195%);
     color: white;
-    align-items: center;
     cursor: pointer;
+    margin: 0 20px 0 0;
 }
 html,body {
     background: #efefef;
@@ -87,21 +84,6 @@ html,body {
     font-family: 'Montserrat', sans-serif;
 }
 
-
-.number-stat {
-    padding: 0px;
-    font-size: 14pt;
-    font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
-    color: #aaa;
-}
-
-.desc-stat {
-    margin-top: -15px;
-    font-size: 10pt;
-    color: #bbb;
-}
-
 .desc {
     text-align: center;
     margin: 25px 40px;
@@ -111,13 +93,6 @@ html,body {
     font-family: "Open Sans";
     padding-bottom: 25px;
     border-bottom: 1px solid #ededed;
-}
-
-.social {
-    margin: 5px 0 12px 0;
-    text-align: center;
-    display: inline-block;
-    font-size: 20pt;
 }
 
 .right {
@@ -156,22 +131,6 @@ html,body {
         text-align: center;
     }
 }
-.gallery  {
-    margin-top: 35px;
-}
-
-.gallery div {
-    margin-bottom: 30px;
-}
-
-.gallery img {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.10);
-    width: auto;
-    height: auto;
-    cursor: pointer;
-    max-width: 100%;
-}
-
 .complaint-form{
     font-family: 'Montserrat', 'sans-serif';
     display: flex;
@@ -212,4 +171,16 @@ html,body {
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     overflow-y: scroll;
+}
+
+.newsfeed-button{
+    display: flex;
+    background-color: white;
+    width: 14.5vh;
+    height: 5vh;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 5px 1px;
+    cursor: pointer;
 }
