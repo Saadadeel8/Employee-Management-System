@@ -6,10 +6,11 @@ import {
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Avatar, notification, Spin, Space,
+  Avatar, notification, Spin, Space, Tooltip,
 } from 'antd';
 import { useQuery } from '@apollo/client';
 import { PoweroffOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router';
 import Login from '../Components/Login';
 import Signup from '../Components/Signup';
 import Profile from '../Components/Profile';
@@ -43,6 +44,9 @@ function Routes() {
     dispatch(userLogout());
     window.location.href = 'Login';
   };
+  const profilePictureClick = () => {
+    window.location.href = 'Profile';
+  };
   return (
     <Router>
       <div>
@@ -51,17 +55,19 @@ function Routes() {
           {console.log(loggedInUser)}
           {loggedInUser ? (
             <div className="display-logout">
-              <div className="photo-left">
-                <Avatar
-                  size={60}
-                  style={{
-                    color: '#ffffff',
-                    backgroundColor: '#3886d3',
-                    fontSize: '20px',
-                  }}
-                >
-                  {loggedInUser.user.name.split(' ').map((n) => n[0]).join('.')}
-                </Avatar>
+              <div className="photo-left" onClick={() => profilePictureClick()}>
+                <Tooltip title="Back to Profile">
+                  <Avatar
+                    size={60}
+                    style={{
+                      color: '#ffffff',
+                      backgroundColor: '#3886d3',
+                      fontSize: '20px',
+                    }}
+                  >
+                    {loggedInUser.user.name.split(' ').map((n) => n[0]).join('.')}
+                  </Avatar>
+                </Tooltip>
               </div>
               <div className="logout-button" onClick={() => logout()}>
                 <PoweroffOutlined />

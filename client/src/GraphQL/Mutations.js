@@ -44,3 +44,29 @@ export const CREATE_EVENT = gql`
         }
     },
 `;
+export const CREATE_POST = gql`
+    mutation createPost($body: String!) {
+        createPost(body: $body) {
+            body
+            createdAt
+            username
+        }
+    },
+`;
+export const CREATE_COMMENT = gql`
+    mutation createComment($postId: String! $body: String!) {
+        createComment(postId: $postId body: $body) {
+            body
+            createdAt
+            username
+        }
+    },
+`;
+export const LIKE_POST = gql`
+    mutation likePost($postID: String) {
+        likePost(postID: $postID) {
+            createdAt
+            username
+        }
+    },
+`;

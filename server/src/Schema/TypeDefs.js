@@ -27,6 +27,7 @@ const typeDefs = gql`
         body: String!
         createdAt: String!
         username: String!
+        user: String
         comments: [Comment]!
         likes: [Like]!
         likeCount: Int!
@@ -54,6 +55,10 @@ const typeDefs = gql`
          users: [User]
          refreshToken: Auth!
          getEvents: [Event]
+         getComments: [Post]
+         getLikes: [Post]
+         getPosts: [Post]
+         getPost(postId: ID!): Post
         }
      # Mutations
      type Mutation {
@@ -78,6 +83,12 @@ const typeDefs = gql`
              title: String
              createdBy: String
              ): Event
+         createPost(body: String!): Post!
+         createComment(postId: String!, body: String!): Post!
+         likePost(postId: ID!): Post!
      }
+     type Subscription {
+    newPost: Post!
+  }
 `;
 module.exports = { typeDefs };

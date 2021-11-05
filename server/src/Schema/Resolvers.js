@@ -4,7 +4,7 @@ import { registerValidate, loginValidate } from './Validators';
 import { issueTokens, getAuthUser, getRefreshTokenUser } from '../Auth/auth';
 import Users from '../../Models/Model';
 import Events from '../../Models/EventModel';
-import Post from "../../Models/PostModel";
+import Post from '../../Models/PostModel';
 
 const resolvers = {
 
@@ -36,6 +36,7 @@ const resolvers = {
       };
     },
     getPosts: async (parent, args, context) => {
+      await getAuthUser(context.req);
       const posts = await Post.find().sort({ createdAt: -1 });
       return posts;
     },
@@ -43,9 +44,8 @@ const resolvers = {
       const post = await Post.findById(postId);
       if (post) {
         return post;
-      } else {
-        throw new Error('Post not found');
       }
+      throw new Error('Post not found');
     },
   },
   Mutation: {
@@ -103,6 +103,7 @@ const resolvers = {
         newEvent,
       };
     },
+    // Post Resolver
     createPost: async (_, { body }, context) => {
       const authUser = await getAuthUser(context.req, true);
 
@@ -112,18 +113,63 @@ const resolvers = {
 
       const newPost = new Post({
         body,
-        user: user.id,
-        username: user.username,
-        createdAt: new Date().toISOString()
+        user: authUser.name,
+        username: authUser.username,
+        createdAt: new Date().toISOString(),
       });
 
       const post = await newPost.save();
 
       context.pubsub.publish('NEW_POST', {
-        newPost: post
+        newPost: post,
       });
 
       return post;
+    },
+    createComment: async (_, { postId, body }, context) => {
+      const authUser = await getAuthUser(context.req, true);
+      if (body.trim() === '') {
+        throw new Error('Comment can not be empty');
+      }
+
+      const post = await Post.findById(postId);
+
+      if (post) {
+        post.comments.unshift({
+          body,
+          postId,
+          user: authUser.name,
+          username: authUser.username,
+          createdAt: new Date().toISOString(),
+        });
+        await post.save();
+        return post;
+      }
+    },
+    likePost: async (_, { postId }, context) => {
+      const authUser = await getAuthUser(context.req, true);
+
+      const post = await Post.findById(postId);
+      if (post) {
+        if (post.likes.find((like) => like.username === authUser.username)) {
+          // Post already likes, unlike it
+          post.likes = post.likes.filter((like) => like.username !== authUser.username);
+        } else {
+          // Not liked, like post
+          post.likes.push({
+            username: authUser.username,
+            createdAt: new Date().toISOString(),
+          });
+        }
+
+        await post.save();
+        return post;
+      }
+    },
+  },
+  Subscription: {
+    newPost: {
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('NEW_POST'),
     },
   },
 };

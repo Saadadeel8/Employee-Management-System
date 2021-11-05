@@ -2,10 +2,13 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import consola from 'consola';
+import { PubSub } from 'graphql-subscriptions';
 import { DB, APP_PORT, APP_SECRET } from '../config';
 import resolvers from './Schema/Resolvers';
 
 const jwt = require('jsonwebtoken');
+
+const pubsub = new PubSub();
 
 const {
   graphqlUploadExpress, // A Koa implementation is also exported.
@@ -48,7 +51,7 @@ const startApp = async () => {
         // for now, let's log the user to the console:
         console.log(user);
         // add the db models and the user to the context
-        return { req };
+        return { req, pubsub };
       },
     });
     await server.start();

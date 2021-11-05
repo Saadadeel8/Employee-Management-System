@@ -43,3 +43,34 @@ query GetEvents{
         modifier
     }
 }`;
+export const GET_POSTS = gql`
+query GetPosts{
+    getPosts{
+        id
+        body
+        user
+        username
+        createdAt
+        comments{ 
+        body 
+        username
+        createdAt
+        }
+    }
+}`;
+export const GET_COMMENTS = gql`
+query GetComments{
+    getComments{
+        body
+        username
+        createdAt
+    }
+}`;
+export const GET_LIKES = gql`
+query GetLikes{
+    getComments{
+        body
+        username
+        createdAt
+    }
+}`;
